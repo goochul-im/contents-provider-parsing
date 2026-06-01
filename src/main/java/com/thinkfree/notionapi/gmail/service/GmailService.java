@@ -30,6 +30,17 @@ public class GmailService {
         return body;
     }
 
+    public JsonNode getMessage(String messageId, String token) {
+        gmailRestClient.get()
+                .uri("https://gmail.googleapis.com/gmail/v1/users/me/messages/{messageId}?format=full",
+                        messageId)
+                .header(HttpHeaders.AUTHORIZATION, getApiToken(token))
+                .retrieve()
+                .body();
+
+
+    }
+
 
 
     private String getApiToken(String token) {

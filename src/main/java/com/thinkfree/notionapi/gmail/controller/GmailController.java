@@ -3,10 +3,7 @@ package com.thinkfree.notionapi.gmail.controller;
 import com.thinkfree.notionapi.gmail.service.GmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,6 +26,12 @@ public class GmailController {
                         token
                 )
         );
+    }
+
+    @GetMapping("/message/{messageId}")
+    public ResponseEntity<?> getMessage(@PathVariable String messageId){
+
+        return new ResponseEntity<>();
     }
 
 }

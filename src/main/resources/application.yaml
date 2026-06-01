@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: notion-api
+
+notion:
+  version: 2026-03-11
+  base-url: https://api.notion.com
+  client-id: ${CLIENT-ID}
+  client-secret: ${CLIENT-SECRET}
+  auth-url: https://api.notion.com/v1/oauth/authorize
+  token-url: /v1/oauth/token
+  redirect-uri: http://localhost:8080/notion/oauth/callback
+
+google:
+  client-id: ${CLIENT-ID}
+  client-secret: ${CLIENT-SECRET}
+  redirect-uri: http://localhost:8080/google/oauth/callback
+  auth-uri: https://accounts.google.com/o/oauth2/v2/auth
+  token-url: https://oauth2.googleapis.com/token
+
+gmail:
+  gmail-api-base-url: https://gmail.googleapis.com

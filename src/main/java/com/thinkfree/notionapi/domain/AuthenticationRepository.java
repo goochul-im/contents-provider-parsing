@@ -2,6 +2,7 @@ package com.thinkfree.notionapi.domain;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ public class AuthenticationRepository {
 
     private final AuthenticationJpaRepository authenticationJpaRepository;
 
+    @Transactional
     public void save(Authentication authentication) {
         Optional<Authentication> optionalAuthentication = authenticationJpaRepository.findAuthenticationByMemberIdAndProviderType(
                 authentication.getMemberId(),
@@ -23,6 +25,7 @@ public class AuthenticationRepository {
         );
     }
 
+    @Transactional
     public Authentication find(String memberEmail, ProviderType providerType) {
         return authenticationJpaRepository.findAuthenticationByMemberIdAndProviderType(
                 memberEmail, providerType

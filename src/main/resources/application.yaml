@@ -9,7 +9,8 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
+    open-in-view: false
 
 notion:
   version: 2026-03-11
@@ -29,3 +30,12 @@ google:
 
 gmail:
   gmail-api-base-url: https://gmail.googleapis.com
+
+atlassian:
+  client-id: ${ATLASSIAN_CLIENT_ID}
+  client-secret: ${ATLASSIAN_CLIENT_SECRET}
+  redirect-uri: http://localhost:8080/atlassian/oauth/callback
+  auth-uri: https://auth.atlassian.com/authorize
+  token-uri: https://auth.atlassian.com/oauth/token
+  accessible-resources-uri: https://api.atlassian.com/oauth/token/accessible-resources
+  user-identifier-uri: https://api.atlassian.com/me

@@ -17,9 +17,11 @@ public class Authentication {
     @Column(name = "member_id", nullable = false)
     private String memberId;
 
+    @Lob
     @Column(name = "access_token", nullable = false)
     private String accessToken;
 
+    @Lob
     @Column(name = "refresh_token")
     private String refreshToken;
 
@@ -27,7 +29,7 @@ public class Authentication {
     @Enumerated(EnumType.STRING)
     private ProviderType providerType;
 
-    // TODO: 인증 토큰별 부가 정보들(구글의 스코프, 노션의 페이지 등)을 어떻게 저장하지??
+    // TODO: 인증 토큰별 부가 정보들(구글의 스코프, 노션의 페이지 등)을 어떻게 저장하지?? 저장해야 확인 가능할듯한데
 
     public Authentication(String memberId, String accessToken, String refreshToken, ProviderType providerType) {
         this.memberId = memberId;

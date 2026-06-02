@@ -1,8 +1,16 @@
+### 변수 정의
+@email = goochul175465@gmail.com
+@pageId = 3677bb7778c9802fa362ecc56fd61275
+@blockId = 3687bb77-78c9-8016-87d8-c187ff46164a
+
 ### 페이지 가져오기
-GET localhost:8080/notion/pages/3667bb7778c9804a9ca5ce49c5f6cba6
+GET localhost:8080/notion/pages/{{pageId}}?email={{email}}
 
 ### 페이지 정보 가져오기
-GET localhost:8080/notion/pages/3677bb7778c9802fa362ecc56fd61275/content
+GET localhost:8080/notion/pages/{{pageId}}/content?email={{email}}
 
 ### 페이지 마크다운 가져오기
-GET localhost:8080/notion/pages/3677bb7778c9802fa362ecc56fd61275/markdown
+GET localhost:8080/notion/pages/{{pageId}}/markdown?email={{email}}
+
+### 블럭 정보 가져오기
+GET localhost:8080/notion/pages/{{blockId}}/content?email={{email}}

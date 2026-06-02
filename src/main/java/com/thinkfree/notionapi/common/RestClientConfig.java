@@ -1,11 +1,13 @@
 package com.thinkfree.notionapi.common;
 
+import com.thinkfree.notionapi.atlassian.config.AtlassianOAuthProperties;
 import com.thinkfree.notionapi.gmail.config.GmailProperties;
 import com.thinkfree.notionapi.google.GoogleOAuthProperties;
 import com.thinkfree.notionapi.notion.config.NotionProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
 @Configuration
@@ -32,6 +34,12 @@ public class RestClientConfig {
     public RestClient googleOauthRestClient(GoogleOAuthProperties properties) {
         return RestClient.builder()
                 .baseUrl(properties.tokenUrl())
+                .build();
+    }
+
+    @Bean
+    public RestClient atlassianOAuthRestClient(AtlassianOAuthProperties properties) {
+        return RestClient.builder()
                 .build();
     }
 

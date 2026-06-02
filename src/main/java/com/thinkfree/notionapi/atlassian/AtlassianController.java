@@ -33,6 +33,17 @@ public class AtlassianController {
         );
     }
 
+    @GetMapping("/content/{pageId}")
+    public ResponseEntity<?> getContent(
+            @PathVariable String pageId,
+            @RequestParam String email
+    ){
+
+        return ResponseEntity.ok(
+                atlassianService.getContent(email, pageId)
+        );
+    }
+
     @GetMapping("/page/test/{pageId}")
     public ResponseEntity<?> getPageTest(@PathVariable String pageId, @RequestParam String email){
 

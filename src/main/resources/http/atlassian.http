@@ -11,3 +11,6 @@ GET localhost:8080/atlassian/page/{{pageId}}?email={{email}}
 
 ### 오래된 액세스 토큰으로 가져오기
 GET localhost:8080/atlassian/page/test/{{pageId}}?email={{email}}
+
+### 페이지 컨텐츠 가져오기
+GET localhost:8080/atlassian/content/{{pageId}}?email={{email}}

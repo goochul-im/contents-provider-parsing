@@ -3,6 +3,7 @@ package com.thinkfree.notionapi.atlassian;
 import com.thinkfree.notionapi.atlassian.config.AtlassianOAuthProperties;
 import com.thinkfree.notionapi.atlassian.dto.AtlassianAccessibleResponse;
 import com.thinkfree.notionapi.atlassian.dto.AtlassianOAuthResponse;
+import com.thinkfree.notionapi.atlassian.dto.ConfluenceContentResponse;
 import com.thinkfree.notionapi.atlassian.dto.ConfluencePageResponse;
 import com.thinkfree.notionapi.domain.Authentication;
 import com.thinkfree.notionapi.domain.AuthenticationRepository;
@@ -88,6 +89,22 @@ public class AtlassianService {
         log.info("page = {}", page);
 
         return page;
+    }
+
+    public ConfluenceContentResponse getContent(String email, String pageId) {
+        Authentication authentication = authenticationRepository.find(email, ProviderType.ATLASSIAN);
+        String accessToken = authentication.getAccessToken();
+
+        String cloudId = "731d6666-db1b-41ed-b782-df2bd259765c";
+
+        ConfluenceContentResponse response = atlassianOAuthRestClient.get()
+                .uri(properties.getPageContentUri(), cloudId, pageId)
+                .header(HttpHeaders.AUTHORIZATION,"Bearer " + accessToken)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .retrieve()
+                .body(ConfluenceContentResponse.class);
+
+        return response;
     }
 
     public ConfluencePageResponse getPage(String email, String pageId) {

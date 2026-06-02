@@ -4,16 +4,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record GoogleExchangeResponse(
         @JsonProperty("access_token")
-        String access_token,
+        String accessToken,
         @JsonProperty("expires_in")
-        long expires_in,
+        long expiresIn,
         @JsonProperty("refresh_token")
-        String refresh_token,
+        String refreshToken,
         @JsonProperty("refresh_token_expires_in")
-        long refresh_token_expires_in,
+        long refreshTokenExpiresIn,
         @JsonProperty("scope")
         String scope,
         @JsonProperty("token_type")
-        String token_type
+        String tokenType,
+        @JsonProperty("id_token")
+        String idToken
 ) {
 }

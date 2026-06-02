@@ -27,8 +27,11 @@ public class GoogleOAuthController {
                 .queryParam("client_id", properties.clientId())
                 .queryParam("redirect_uri", properties.redirectUri())
                 .queryParam("response_type", "code")
-                .queryParam("scope", "https://www.googleapis.com/auth/gmail.readonly")
+                .queryParam("scope",
+                        "openid email profile https://www.googleapis.com/auth/gmail.readonly"
+                        )
                 .queryParam("access_type", "offline")
+                .queryParam("prompt","consent")
                 .build()
                 .toUri();
 

@@ -15,23 +15,26 @@ public class GmailController {
     @GetMapping("/messages")
     public ResponseEntity<?> messages(
             @RequestParam(defaultValue = "100") int maxResult,
-            @RequestParam String token,
-            @RequestParam String userId
+            @RequestParam String email
     ) {
 
         return ResponseEntity.ok(
                 gmailService.getMessages(
-                        userId,
-                        maxResult,
-                        token
+                        email,
+                        maxResult
                 )
         );
     }
 
-    @GetMapping("/message/{messageId}")
-    public ResponseEntity<?> getMessage(@PathVariable String messageId){
+    @GetMapping("/message/{email}")
+    public ResponseEntity<?> getMessage(
+            @PathVariable String email,
+            @RequestParam String messageId
+    ){
 
-        return new ResponseEntity<>();
+        return ResponseEntity.ok(
+                gmailService.getMessage(email, messageId)
+        );
     }
 
 }

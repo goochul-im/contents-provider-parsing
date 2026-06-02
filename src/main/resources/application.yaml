@@ -9,7 +9,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     open-in-view: false
 
 notion:
@@ -39,3 +39,4 @@ atlassian:
   token-uri: https://auth.atlassian.com/oauth/token
   accessible-resources-uri: https://api.atlassian.com/oauth/token/accessible-resources
   user-identifier-uri: https://api.atlassian.com/me
+  get-page-uri: https://api.atlassian.com/ex/confluence/{cloudId}/wiki/api/v2/pages/{pageId}

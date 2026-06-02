@@ -13,16 +13,21 @@ public class AuthenticationRepository {
     private final AuthenticationJpaRepository authenticationJpaRepository;
 
     @Transactional
-    public void save(Authentication authentication) {
+    public Authentication save(Authentication authentication) {
         Optional<Authentication> optionalAuthentication = authenticationJpaRepository.findAuthenticationByMemberIdAndProviderType(
                 authentication.getMemberId(),
                 authentication.getProviderType()
         );
 
-        optionalAuthentication.ifPresentOrElse(
-                authenticationJpaRepository::delete,
-                () -> authenticationJpaRepository.save(authentication)
-        );
+        optionalAuthentication.ifPresent(authenticationJpaRepository::delete);
+
+        return authenticationJpaRepository.save(authentication);
+    }
+
+    @Transactional
+    public void refresh(long id, String refreshToken) {
+        Authentication authentication = authenticationJpaRepository.findById(id).orElseThrow(() -> new RuntimeException(""));
+        authentication.refresh(refreshToken);
     }
 
     @Transactional

@@ -10,6 +10,7 @@ public record AtlassianOAuthProperties(
         String authUri,
         String tokenUri,
         String accessibleResourcesUri,
-        String userIdentifierUri
+        String userIdentifierUri,
+        String getPageUri
 ) {
 }

@@ -24,8 +24,9 @@ public class AtlassianOAuthController {
         String scope = String.join(" ",
 //                "read:jira-work",
 //                "read:jira-user",
-                "read:confluence-content.all",
-                "read:confluence-content.summary",
+                "read:confluence-space.summary",
+                "read:page:confluence",
+                "read:content:confluence",
                 "offline_access",
                 "read:me"
         );

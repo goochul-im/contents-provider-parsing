@@ -36,15 +36,12 @@ public class AtlassianOAuthService {
                 "redirect_uri", properties.redirectUri()
         );
 
-        log.info("code = {}",code);
-
         AtlassianOAuthResponse response = atlassianOAuthRestClient.post()
                 .uri(properties.tokenUri())
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(requestBody)
                 .retrieve()
                 .body(AtlassianOAuthResponse.class);
-        log.info("response = {}", response);
         String accessToken = response.accessToken();
         AtlassianUserIdentifiedResponse userInfo = getUserInfo(accessToken);
 

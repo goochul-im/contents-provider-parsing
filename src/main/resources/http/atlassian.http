@@ -1,0 +1,13 @@
+### 변수 정의
+@email = goochul175465@gmail.com
+@size = 30
+@pageId = 229383
+
+### 동시 리프레싱
+GET localhost:8080/atlassian/refresh/test?email={{email}}&size={{size}}
+
+### 페이지 가져오기
+GET localhost:8080/atlassian/page/{{pageId}}?email={{email}}
+
+### 오래된 액세스 토큰으로 가져오기
+GET localhost:8080/atlassian/page/test/{{pageId}}?email={{email}}

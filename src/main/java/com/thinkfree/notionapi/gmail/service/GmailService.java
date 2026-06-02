@@ -1,18 +1,20 @@
 package com.thinkfree.notionapi.gmail.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thinkfree.notionapi.domain.Authentication;
+import com.thinkfree.notionapi.domain.AuthenticationJpaRepository;
 import com.thinkfree.notionapi.domain.AuthenticationRepository;
 import com.thinkfree.notionapi.domain.ProviderType;
+import com.thinkfree.notionapi.gmail.controller.MessageBodyResponse;
 import com.thinkfree.notionapi.gmail.dto.GmailMessageResponse;
 import com.thinkfree.notionapi.gmail.dto.GmailMessages;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +23,7 @@ public class GmailService {
 
     private final RestClient gmailRestClient;
     private final AuthenticationRepository authenticationRepository;
+    private final GmailBodyExtractor gmailBodyExtractor;
 
     public GmailMessages getMessages(String email, int maxResults) {
         GmailMessages body = gmailRestClient.get()
@@ -36,7 +39,7 @@ public class GmailService {
         return body;
     }
 
-    public GmailMessageResponse getMessage(String email, String messageId) {
+    public MessageBodyResponse getMessage(String email, String messageId) {
         GmailMessageResponse body = gmailRestClient.get()
                 .uri("https://gmail.googleapis.com/gmail/v1/users/me/messages/{messageId}?format=full",
                         messageId)
@@ -44,16 +47,27 @@ public class GmailService {
                 .retrieve()
                 .body(GmailMessageResponse.class);
 
+        Objects.requireNonNull(body);
         log.info("body = {}", body);
 
-        return body;
+        String text = gmailBodyExtractor.extractTextPlain(body);
+        String html = Jsoup.parse(gmailBodyExtractor.extractTextHtml(body)).text();
+        String from = gmailBodyExtractor.getFrom(body);
+        String date = gmailBodyExtractor.getDate(body);
+        String subject = gmailBodyExtractor.getSubject(body);
+
+        return new MessageBodyResponse(
+                subject,
+                from,
+                date,
+                text,
+                html
+        );
     }
 
     private String getAccessToken(String email) {
-        Authentication authentication = authenticationRepository.findAuthenticationByMemberIdAndProviderType(
+        Authentication authentication = authenticationRepository.find(
                 email, ProviderType.GMAIL
-        ).orElseThrow(
-                () -> new IllegalArgumentException("필요한 토큰을 찾지 못함")
         );
 
         String token = authentication.getAccessToken();

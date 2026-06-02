@@ -1,7 +1,11 @@
 package com.thinkfree.notionapi.notion.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.thinkfree.notionapi.domain.Authentication;
+import com.thinkfree.notionapi.domain.AuthenticationJpaRepository;
+import com.thinkfree.notionapi.domain.AuthenticationRepository;
+import com.thinkfree.notionapi.domain.ProviderType;
 import com.thinkfree.notionapi.notion.config.NotionProperties;
+import com.thinkfree.notionapi.notion.dto.NotionOAuthResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -19,12 +23,13 @@ public class NotionOAuthService {
 
     private final NotionProperties notionProperties;
     private final RestClient notionRestClient;
-    private final NotionService notionService;
+    private final AuthenticationRepository authenticationRepository;
 
-    public JsonNode exchangeCodeForToken(String code) {
+
+    public NotionOAuthResponse exchangeCodeForToken(String code) {
         String basicAuth = createBasicAuth();
 
-        JsonNode body = notionRestClient.post()
+        NotionOAuthResponse body = notionRestClient.post()
                 .uri(notionProperties.tokenUrl())
                 .header(HttpHeaders.AUTHORIZATION, basicAuth)
                 .body(Map.of(
@@ -33,13 +38,18 @@ public class NotionOAuthService {
                         "redirect_uri", notionProperties.redirectUri()
                 ))
                 .retrieve()
-                .body(JsonNode.class);
+                .body(NotionOAuthResponse.class);
 
-        log.info("body = {}",body.toPrettyString());
-        String accessToken = body.get("access_token").toString();
-        accessToken = accessToken.substring(1, accessToken.length() - 1);
+        log.info("body = {}", body);
+        String accessToken = body.accessToken();
         log.info("access_token = {}", accessToken);
-        notionService.apiToken = accessToken;
+
+        authenticationRepository.save(new Authentication(
+                body.owner().user().person().email(),
+                body.accessToken(),
+                body.refreshToken(),
+                ProviderType.NOTION
+        ));
 
         return body;
     }

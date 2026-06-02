@@ -12,20 +12,20 @@ import lombok.NoArgsConstructor;
 public class Authentication {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(name = "member_id", nullable = false)
-    String memberId;
+    private String memberId;
 
     @Column(name = "access_token", nullable = false)
-    String accessToken;
+    private String accessToken;
 
     @Column(name = "refresh_token")
-    String refreshToken;
+    private String refreshToken;
 
     @Column(name = "provide_type", nullable = false)
     @Enumerated(EnumType.STRING)
-    ProviderType providerType;
+    private ProviderType providerType;
 
     // TODO: 인증 토큰별 부가 정보들(구글의 스코프, 노션의 페이지 등)을 어떻게 저장하지??
 

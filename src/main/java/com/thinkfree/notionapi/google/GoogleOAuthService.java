@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thinkfree.notionapi.domain.Authentication;
+import com.thinkfree.notionapi.domain.AuthenticationJpaRepository;
 import com.thinkfree.notionapi.domain.AuthenticationRepository;
 import com.thinkfree.notionapi.domain.ProviderType;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,6 @@ import org.springframework.web.client.RestClient;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.Map;
 
 @Service
 @Slf4j

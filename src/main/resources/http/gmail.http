@@ -1,6 +1,6 @@
 ### 변수 정의
 @email = goochul175465@gmail.com
-@messageId = 19e06fccc1ab286b
+@messageId = 19e303113b8daa0f
 
 ### 메시지 목록 가져오기
 GET localhost:8080/gmail/messages?email={{email}}

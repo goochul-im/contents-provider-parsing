@@ -1,6 +1,10 @@
 package com.thinkfree.notionapi.notion.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.thinkfree.notionapi.domain.Authentication;
+import com.thinkfree.notionapi.domain.AuthenticationJpaRepository;
+import com.thinkfree.notionapi.domain.AuthenticationRepository;
+import com.thinkfree.notionapi.domain.ProviderType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -13,10 +17,10 @@ import org.springframework.web.client.RestClient;
 public class NotionService {
 
     private final RestClient notionRestClient;
-    public String apiToken = "no used yet";
+    private final AuthenticationRepository authenticationRepository;
 
-    public JsonNode retrievePage(String pageId) {
-        String apiToken1 = getApiToken();
+    public JsonNode retrievePage(String email, String pageId) {
+        String apiToken1 = getAccessToken(email);
         log.info("token = {}", apiToken1);
         JsonNode body = notionRestClient.get()
                 .uri("/v1/pages/{pageId}", pageId)
@@ -29,13 +33,13 @@ public class NotionService {
         return body;
     }
 
-    public JsonNode retrieveMarkdownContent(String pageId) {
+    public JsonNode retrieveMarkdownContent(String pageId, String email) {
         JsonNode body = notionRestClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/v1/pages/{blockId}/markdown")
                         .queryParam("page_size", 100)
                         .build(pageId))
-                .header(HttpHeaders.AUTHORIZATION, getApiToken())
+                .header(HttpHeaders.AUTHORIZATION, getAccessToken(email))
                 .retrieve()
                 .body(JsonNode.class);
 
@@ -44,13 +48,13 @@ public class NotionService {
         return body;
     }
 
-    public JsonNode retrievePageContent(String pageId) {
+    public JsonNode retrievePageContent(String pageId, String email) {
         JsonNode body = notionRestClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/v1/blocks/{blockId}/children")
                         .queryParam("page_size", 100)
                         .build(pageId))
-                .header(HttpHeaders.AUTHORIZATION, getApiToken())
+                .header(HttpHeaders.AUTHORIZATION, getAccessToken(email))
                 .retrieve()
                 .body(JsonNode.class);
 
@@ -59,8 +63,11 @@ public class NotionService {
         return body;
     }
 
-    private String getApiToken() {
-        return "Bearer " + apiToken;
+    private String getAccessToken(String email) {
+
+        Authentication authentication = authenticationRepository.find(email, ProviderType.NOTION);
+
+        return "Bearer " + authentication.getAccessToken();
     }
 
 }

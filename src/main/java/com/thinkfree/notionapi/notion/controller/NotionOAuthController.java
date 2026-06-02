@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.thinkfree.notionapi.notion.service.NotionOAuthService;
 import com.thinkfree.notionapi.notion.config.NotionProperties;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,11 +37,11 @@ public class NotionOAuthController {
     }
 
     @GetMapping("/callback")
-    public JsonNode callback(
+    public ResponseEntity<?> callback(
             @RequestParam String code,
             @RequestParam String state
     ){
-        return notionOAuthService.exchangeCodeForToken(code);
+        return ResponseEntity.ok(notionOAuthService.exchangeCodeForToken(code));
     }
 
 }
